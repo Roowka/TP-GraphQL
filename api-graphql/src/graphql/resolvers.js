@@ -1,18 +1,14 @@
-const { User } = require("../models/User.js");
+const postResolver = require("./resolvers/postResolver");
+const commentResolver = require("./resolvers/commentResolver");
 
 const resolvers = {
   Query: {
-    /* users: async (parent, args) => {
-      return await User.find();
-    }, */
+    ...postResolver.Query,
+    ...commentResolver.Query
   },
   Mutation: {
-    /* createUser: async (parent, args) => {
-      const { email, name } = args;
-      const user = new User({ email, name });
-      await user.save();
-      return user;
-    }, */
+    ...postResolver.Mutation,
+    ...commentResolver.Mutation
   },
 };
 
