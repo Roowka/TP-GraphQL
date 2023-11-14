@@ -4,7 +4,7 @@ const typeDefs = gql`
   scalar Date
 
   type Query {
-    posts: [Post]!
+    posts(order: String!): [Post]!
     postById(id: ID!): Post!
     comments: [Comment]!
     commentByPostId(postId: ID!): [Comment]!

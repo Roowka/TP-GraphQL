@@ -3,128 +3,94 @@ import graphqlClient from ".";
 
 class QueryManager {
   async createPost(title, author, link) {
-    /* const { data } = await graphqlClient.mutate({
+    const { data } = await graphqlClient.mutate({
       mutation: gql`
-        mutation Mutation {
-          
+      mutation CreatePost{
+        createPost(title: "${title}", author: "${author}", link: "${link}") {
+          _id
+          author
+          createdAt
+          link
+          title
         }
+      }
       `,
-    }); */
-
-    return {
-      id: 1,
-      title,
-      author,
-      link,
-      createdAt: "10-06-2023",
-    };
+    });
+    return { ...data };
   }
   async deletePost(postId) {
-    /* const {data} = await graphqlClient.mutate({
+    const { data } = await graphqlClient.mutate({
       mutation: gql`
-        mutation Mutation {
-          
+        mutation DeletePost {
+            deletePost(id: "${postId}")
         }
       `,
-    }); */
-    return postId;
+    });
+    return data.deletePost.id;
   }
   async createComment(content, author, postId) {
-    /* const {data} = await graphqlClient.mutate({
+    const { data } = await graphqlClient.mutate({
       mutation: gql`
-        mutation Mutation {
-          
+      mutation CreateComment {
+        createComment(content: "${content}", author: "${author}", postId: "${postId}") {
+          _id
+          author
+          content
+          createdAt
+          postId
         }
+      }
       `,
-    }); */
-    return {
-      id: 5,
-      content,
-      author,
-      postId,
-    };
+    });
+    return data;
   }
   async getPosts(order = "asc") {
-    /* const { data } = await graphqlClient.query({
+    const { data } = await graphqlClient.query({
       query: gql`
-        query {
-          
+      query Posts {
+        posts(order: "${order}") {
+          _id
+          author
+          createdAt
+          link
+          title
         }
+      }
       `,
-    }); */
-
-    return [
-      {
-        id: 1,
-        title: "post 1",
-        author: "author 1",
-        link: "https://google.com",
-        createdAt: "10-11-2023",
-      },
-      {
-        id: 2,
-        title: "post 2",
-        author: "author 2",
-        link: "https://google.com",
-        createdAt: "05-06-2023",
-      },
-      {
-        id: 3,
-        title: "post 3",
-        author: "author 3",
-        link: "https://google.com",
-        createdAt: "02-06-2023",
-      },
-      {
-        id: 4,
-        title: "post 4",
-        author: "author 4",
-        link: "https://google.com",
-        createdAt: "10-06-2023",
-      },
-    ];
+    });
+    return data.posts;
   }
   async getPost(id) {
-    /* const { data } = await graphqlClient.query({
+    const { data } = await graphqlClient.query({
       query: gql`
-        query {
-          
+      query PostById {
+        postById(id: "${id}") {
+          _id
+          author
+          createdAt
+          link
+          title
         }
+      }
       `,
-    }); */
-
-    return {
-      id: id,
-      title: "post " + id,
-      author: "author " + id,
-      link: "https://google.com",
-      createdAt: "10-06-2023",
-    };
+    });
+    return data.postById;
   }
   async getPostComments(postId) {
-    /* const { data } = await graphqlClient.query({
+    const { data } = await graphqlClient.query({
       query: gql`
-        query {
-          
+      query CommentByPostId {
+        commentByPostId(postId: "${postId}") {
+          _id
+          author
+          content
+          createdAt
+          postId
         }
+      }
       `,
-    }); */
-    return [
-      {
-        id: 5,
-        content: "commentaire",
-        author: "bob",
-        postId: 4,
-        createdAt: "10-05-2023",
-      },
-      {
-        id: 6,
-        content: "commentaire 2",
-        author: "bob 2",
-        postId: 4,
-        createdAt: "10-11-2023",
-      },
-    ];
+    });
+    return data.commentByPostId;
   }
 }
 

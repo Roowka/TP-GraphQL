@@ -54,7 +54,9 @@ const timeAgo = computed(() => {
       <div class="post-infos">
         <div class="post-user">Par {{ post?.author }}</div>
         <div class="post-time">Il y a {{ timeAgo }}</div>
-        <RouterLink to="/posts/1/comments" class="post-comments-count"
+        <RouterLink
+          :to="`/posts/${post?._id}/comments`"
+          class="post-comments-count"
           >Voir les commentaires</RouterLink
         >
       </div>

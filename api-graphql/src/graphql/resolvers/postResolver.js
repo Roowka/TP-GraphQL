@@ -4,7 +4,10 @@ const { Comment } = require("../../models/Comment.js");
 module.exports = {
     Query: {
         posts: async (parent, args) => {
-            return await Post.find();
+            const sortBy = {
+                createdAt: args.order === 'asc' ? 1 : -1
+            };
+            return await Post.find().sort(sortBy);
         },
         postById: async (parent, args) => {
             return await Post.findById(args.id);
@@ -14,9 +17,13 @@ module.exports = {
         createPost: async (parent, args) => {
             try {
                 const { title, author, link } = args;
-                const post = new Post({ title, author, link });
-                await post.save();
-                return post;
+                if (title && author && link) {
+                    const post = new Post({ title, author, link });
+                    await post.save();
+                    return post;
+                } else {
+                    throw new Error("All fields are required");
+                }
             } catch (error) {
                 return error;
             }

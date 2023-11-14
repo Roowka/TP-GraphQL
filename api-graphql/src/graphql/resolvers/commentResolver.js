@@ -5,7 +5,6 @@ module.exports = {
         comments: async (parent, args) => {
             return await Comment.find();
         },
-
         commentByPostId: async (parent, args) => {
             return await Comment.find({ postId: args.postId });
         }
@@ -14,9 +13,13 @@ module.exports = {
         createComment: async (parent, args) => {
             try {
                 const { content, author, postId } = args;
-                const comment = new Comment({ content, author, postId });
-                await comment.save();
-                return comment;
+                if (content && author && postId) {
+                    const comment = new Comment({ content, author, postId });
+                    await comment.save();
+                    return comment;
+                } else {
+                    throw new Error("All fields are required");
+                }
             } catch (error) {
                 return error;
             }
