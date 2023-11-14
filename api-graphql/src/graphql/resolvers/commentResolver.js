@@ -4,6 +4,10 @@ module.exports = {
     Query: {
         comments: async (parent, args) => {
             return await Comment.find();
+        },
+
+        commentByPostId: async (parent, args) => {
+            return await Comment.find({ postId: args.postId });
         }
     },
     Mutation: {

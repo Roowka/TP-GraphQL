@@ -1,9 +1,13 @@
 const { Post } = require("../../models/Post.js");
+const { Comment } = require("../../models/Comment.js");
 
 module.exports = {
     Query: {
         posts: async (parent, args) => {
             return await Post.find();
+        },
+        postById: async (parent, args) => {
+            return await Post.findById(args.id);
         }
     },
     Mutation: {
@@ -17,18 +21,11 @@ module.exports = {
                 return error;
             }
         },
-        updatePost: async (parent, args) => {
+        deletePost: async (parent, args) => {
             try {
-                const { id, title, author, link } = args;
-                await Post.findByIdAndUpdate(id, { title, author, link });
-            } catch (error) {
-                return error;
-            }
-        },
-        deletePost: async (parent, id) => {
-            try {
-                await Post.findByIdAndDelete(id);
-                return true;
+                const deletedPost = await Post.findByIdAndDelete(args.id);
+                await Comment.deleteMany({ postId: args.id });
+                return deletedPost.id;
             } catch (error) {
                 return error;
             }
